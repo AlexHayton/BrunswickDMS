@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Browse Documents" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Browse.aspx.cs" Inherits="BrunswickDMS.Browse" %>
+<%@ Register TagPrefix="uc" TagName="DocumentListView" Src="~/User Controls/DocumentListView.ascx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 
@@ -17,4 +18,6 @@
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    <h3>Your Documents</h3>
+    <uc:DocumentListView runat="server"/>
 </asp:Content>

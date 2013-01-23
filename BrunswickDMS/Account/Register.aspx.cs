@@ -48,7 +48,7 @@ namespace BrunswickDMS.Account
             // Check whether this user already exists first...
             // Create a new row if it doesn't exist or update the old one if it does.
             var existingUser = database.Users.SingleOrDefault(
-                u => u.UserName== wizard.UserName);
+                u => u.UserName == wizard.UserName);
             if (existingUser == null)
             {
                 User user = new User();

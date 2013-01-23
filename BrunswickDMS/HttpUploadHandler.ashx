@@ -5,11 +5,14 @@ using System.Web;
 using System.IO;
 using System.Web.Hosting;
 using System.Diagnostics;
+using System.Linq;
+using DataLayer.Models;
 
 /*
  * Copyright Michiel Post
  * http://www.michielpost.nl
  * contact@michielpost.nl
+ * Modified by Alex Hayton to support saving to database.
  * */
 
 public class HttpUploadHandler : IHttpHandler {
@@ -21,6 +24,8 @@ public class HttpUploadHandler : IHttpHandler {
     private bool _lastChunk;
     private bool _firstChunk;
     private long _startByte;
+
+    private DMSContext database = new DMSContext();
 
     StreamWriter _debugFileStreamWriter;
     TextWriterTraceListener _debugListener;
@@ -74,10 +79,8 @@ public class HttpUploadHandler : IHttpHandler {
                 {
                     Debug.WriteLine("Last chunk arrived");
 
-                    // Upload file contents to the database.
-
                     //Finish stuff....
-                    FinishedFileUpload(_fileName, _parameters);
+                    FinishedFileUpload(tempPath, context.User.Identity.Name, _fileName, _parameters);
                 }
 
             }
@@ -111,8 +114,64 @@ public class HttpUploadHandler : IHttpHandler {
     /// </summary>
     /// <param name="fileName"></param>
     /// <param name="parameters"></param>
-    protected virtual void FinishedFileUpload(string fileName, string parameters)
+    protected virtual void FinishedFileUpload(string tempFile, string userName, string fileName, string parameters)
     {
+        // Save the document data to the database. 
+        // The limit of 10MB prevents huge files being uploaded here and associated issues with memory usage.
+        try
+        {
+            // The document data goes in its own table, to speed up access for metadata.
+            DocumentData newData = null;
+            long fileSize = 0;
+            try
+            {
+                newData = new DocumentData();
+                byte[] fileData = File.ReadAllBytes(tempFile);
+                fileSize = fileData.LongLength;
+                newData.FileData = fileData;
+                database.DocumentDataFiles.Add(newData);
+            }
+            catch (Exception e)
+            {
+                throw new FileNotFoundException("Could not access the temporary file to read into the database! See inner exception for more details.", e);
+            }
+
+            try
+            {
+                if (newData != null)
+                {
+                    // Find the user that uploaded the document.
+                    // Link by foreign key.
+                    var existingUser = database.Users.SingleOrDefault(
+                        u => u.UserName == userName);
+                    if (existingUser == null)
+                    {
+                        throw new ArgumentOutOfRangeException("The uploading user does not exist in the database!");
+                    }
+
+                    Document newDocument = new Document();
+                    newDocument.Author = existingUser;
+                    newDocument.DocumentData = newData;
+                    newDocument.Name = fileName;
+                    string fileExtension = Path.GetExtension(fileName);
+                    newDocument.DocType = Document.GetDocumentTypeFromExtension(fileExtension);
+                    newDocument.DocSize = fileSize;
+                    database.Documents.Add(newDocument);
+
+                    database.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new FileNotFoundException("Could not save the document into the database! See inner exception for more details.", e);
+            }
+        }
+        finally
+        {
+            // Clean up the temp file regardless of success or failure.
+            if (File.Exists(tempFile))
+                File.Delete(tempFile);
+        }
     }
 
     /// <summary>

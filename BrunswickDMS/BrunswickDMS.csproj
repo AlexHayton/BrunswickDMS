@@ -187,6 +187,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="User Controls\DocumentListView.ascx" />
     <Content Include="Pages\Browse.aspx" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\bullet.png" />
@@ -299,6 +300,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="User Controls\DocumentListView.ascx.cs">
+      <DependentUpon>DocumentListView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User Controls\DocumentListView.ascx.designer.cs">
+      <DependentUpon>DocumentListView.ascx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Browse.aspx.cs">
       <DependentUpon>Browse.aspx</DependentUpon>

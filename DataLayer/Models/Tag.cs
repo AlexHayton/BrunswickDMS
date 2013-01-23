@@ -8,17 +8,19 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Models
 {
-    public class DocumentData : BaseData
+    public class Tag : BaseData
     {
-        public DocumentData() : base()
+        public Tag() : base()
         {
         }
 
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int DocumentDataId { get; set; }
+        public int TagId { get; set; }
 
         [Required]
-        public byte[] FileData { get; set; }
+        public string TagName { get; set; }
+
+        public string Description { get; set; }
     }
 }
