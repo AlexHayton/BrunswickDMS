@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrunswickDMS", "BrunswickDMS\BrunswickDMS.csproj", "{23492D14-A6EF-4EF3-9568-5F148D805CFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{61C2A1E6-1CB2-45D0-8653-EA78BA67CB92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silverlight", "Silverlight\Silverlight.csproj", "{A7D09EEA-0038-41AE-BF6E-7B8EA0514758}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{23492D14-A6EF-4EF3-9568-5F148D805CFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23492D14-A6EF-4EF3-9568-5F148D805CFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23492D14-A6EF-4EF3-9568-5F148D805CFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23492D14-A6EF-4EF3-9568-5F148D805CFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61C2A1E6-1CB2-45D0-8653-EA78BA67CB92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61C2A1E6-1CB2-45D0-8653-EA78BA67CB92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61C2A1E6-1CB2-45D0-8653-EA78BA67CB92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61C2A1E6-1CB2-45D0-8653-EA78BA67CB92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7D09EEA-0038-41AE-BF6E-7B8EA0514758}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7D09EEA-0038-41AE-BF6E-7B8EA0514758}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7D09EEA-0038-41AE-BF6E-7B8EA0514758}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7D09EEA-0038-41AE-BF6E-7B8EA0514758}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
