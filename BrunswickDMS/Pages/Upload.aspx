@@ -39,7 +39,6 @@
         <div class="content-wrapper">
             <hgroup class="title">
                 <h1><%: Title %>.</h1>
-                <h2>Upload documents</h2>
             </hgroup>
             <p>
                 Upload new documents to the system.

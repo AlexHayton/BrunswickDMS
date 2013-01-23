@@ -4,10 +4,13 @@
 <html lang="en">
 <head runat="server">
     <meta charset="utf-8" />
-    <title><%: Page.Title %> - My ASP.NET Application</title>
+    <title>Brunswick DMS - <%: Page.Title %></title>
     <asp:PlaceHolder runat="server">     
-          <%: Scripts.Render("~/bundles/modernizr") %>
-    </asp:PlaceHolder>  
+         <%: Scripts.Render("~/bundles/modernizr") %>
+         <%: Scripts.Render("~/bundles/jquery") %>
+         <%: Scripts.Render("~/bundles/jqueryui") %>
+    </asp:PlaceHolder>
+    <webopt:BundleReference runat="server" Path="~/Content/themes/base/css" /> 
     <webopt:BundleReference runat="server" Path="~/Content/css" /> 
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
@@ -19,8 +22,10 @@
         <Scripts>
             <%--Framework Scripts--%>
             <asp:ScriptReference Name="MsAjaxBundle" />
+            <%--
             <asp:ScriptReference Name="jquery" />
             <asp:ScriptReference Name="jquery.ui.combined" />
+            --%>
             <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
             <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
             <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />

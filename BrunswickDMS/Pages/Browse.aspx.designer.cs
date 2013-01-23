@@ -11,5 +11,32 @@ namespace BrunswickDMS {
     
     
     public partial class Browse {
+        
+        /// <summary>
+        /// DocumentListView1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::BrunswickDMS.DocumentListView DocumentListView1;
+        
+        /// <summary>
+        /// DocumentListView2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::BrunswickDMS.DocumentListView DocumentListView2;
+        
+        /// <summary>
+        /// DocumentListView3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::BrunswickDMS.DocumentListView DocumentListView3;
     }
 }

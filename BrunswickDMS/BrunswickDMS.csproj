@@ -204,6 +204,7 @@
     <Content Include="Images\orderedList9.png" />
     <Content Include="packages.config" />
     <Content Include="HttpUploadHandler.ashx" />
+    <Content Include="RetrieveDocument.ashx" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
@@ -301,6 +302,9 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="RetrieveDocument.ashx.cs">
+      <DependentUpon>RetrieveDocument.ashx</DependentUpon>
+    </Compile>
     <Compile Include="User Controls\DocumentListView.ascx.cs">
       <DependentUpon>DocumentListView.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -343,6 +347,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\FileTypes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Account\Web.config" />
@@ -360,6 +365,10 @@
     <ProjectReference Include="..\DataLayer\DataLayer.csproj">
       <Project>{61c2a1e6-1cb2-45d0-8653-ea78ba67cb92}</Project>
       <Name>DataLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilityFunctions\UtilityFunctions.csproj">
+      <Project>{7e1866f2-5bc0-4ba8-88bc-87c58d9c70d6}</Project>
+      <Name>UtilityFunctions</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

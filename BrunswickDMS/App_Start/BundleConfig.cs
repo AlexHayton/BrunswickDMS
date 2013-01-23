@@ -21,6 +21,12 @@ namespace BrunswickDMS
                   "~/Scripts/WebForms/TreeView.js",
                   "~/Scripts/WebForms/WebParts.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+                    "~/Scripts/jquery-{version}.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
+                        "~/Scripts/jquery-ui-{version}.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/MsAjaxJs").Include(
                 "~/Scripts/WebForms/MsAjax/MicrosoftAjax.js",
                 "~/Scripts/WebForms/MsAjax/MicrosoftAjaxApplicationServices.js",

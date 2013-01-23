@@ -19,6 +19,9 @@
                     Author
                 </th>
                 <th>
+                    Uploaded
+                </th>
+                <th>
                     Link
                 </th>
             </tr>
@@ -29,19 +32,22 @@
     <ItemTemplate>
         <tr>
             <td>
-                <asp:Label ID="DocumentTypeLabel" runat="server" Text='<%# Eval("DocType") %>' />
+                <asp:Image ID="DocumentTypeImage" runat="server" Width="4em" Height="4em" ImageUrl='<%# GetIconForDocument(Eval("DocType"), Eval("DocumentId")) %>' />
             </td>
             <td>
-                <asp:Label ID="DocumentNameLabel" runat="server" Text='<%# Eval("Name") %>' />,
+                <asp:Label ID="DocumentNameLabel" runat="server" Text='<%# Eval("Name") %>' />
             </td>
             <td>
-                <asp:Label ID="DocumentSizeLabel" runat="server" Text='<%# Eval("DocSize") %>' />
+                <asp:Label ID="DocumentSizeLabel" runat="server" Text='<%# GetHumanReadableFileSize(Eval("DocSize")) %>' />
             </td>
             <td>
                 <asp:Label ID="DocumentAuthorLabel" runat="server" Text='<%# Eval("Author.UserName") %>' />
             </td>
             <td>
-                <a href='/Pages/RetrieveDocument.aspx?id=<%# Eval("DocumentId") %>'>Get</a>
+                <asp:Label ID="DocumentUploadedLabel" runat="server" Text='<%# Eval("CreatedDate") %>' />
+            </td>
+            <td>
+                <a href='<%# GetDownloadLinkForDocument(Eval("DocumentId")) %>' target="_blank">Get</a>
             </td>
         </tr>
     </ItemTemplate>
