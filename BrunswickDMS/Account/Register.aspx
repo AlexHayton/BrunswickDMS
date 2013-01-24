@@ -27,13 +27,13 @@
                         <ol>
                             <li>
                                 <asp:Label runat="server" AssociatedControlID="UserName">User Name</asp:Label>
-                                <asp:TextBox runat="server" ID="UserName" />
+                                <asp:TextBox runat="server" ID="UserName" title="Your username may contain spaces."/>
                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="UserName"
                                     CssClass="field-validation-error" ErrorMessage="The User Name field is required." />
                             </li>
                             <li>
                                 <asp:Label runat="server" AssociatedControlID="Email">Email</asp:Label>
-                                <asp:TextBox runat="server" ID="Email" TextMode="Email" />
+                                <asp:TextBox runat="server" ID="Email" TextMode="Email" title="Please enter your username."/>
                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="Email"
                                     CssClass="field-validation-error" ErrorMessage="The email address field is required." />
                             </li>
@@ -49,7 +49,7 @@
                             </li>
                             <li>
                                 <asp:Label runat="server" AssociatedControlID="Password">Password</asp:Label>
-                                <asp:TextBox runat="server" ID="Password" TextMode="Password" />
+                                <asp:TextBox runat="server" ID="Password" TextMode="Password" title="Passwords must be more than <%: Membership.MinRequiredPasswordLength %> long"/>
                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="Password"
                                     CssClass="field-validation-error" ErrorMessage="The password field is required." />
                             </li>

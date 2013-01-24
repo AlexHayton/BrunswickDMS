@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,97 @@ namespace UtilityFunctions
         /// </summary>
         /// <param name="strfileName"></param>
         /// <returns>Returns the Content MimeType </returns>
-        public static string GetMimeFromFile(string strFileName)
+        public static string GetMimeFromFile(string fileName, string filePath)
+        {
+            // Handle Office 2007 documents specially.
+            // The auto-detection code treats them as regular ZIP files!
+            string extension = Path.GetExtension(fileName);
+            string mimeType = string.Empty;
+
+            switch (extension)
+            {
+                // Word 2007
+                case ".docx":
+                    mimeType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                    break;
+
+                case ".docm":
+                    mimeType = "application/vnd.ms-word.document.macroEnabled.12";
+                    break;
+
+                case ".dotx":
+                    mimeType = "application/vnd.openxmlformats-officedocument.wordprocessingml.template";
+                    break;
+
+                case ".dotm":
+                    mimeType = "application/vnd.ms-word.template.macroEnabled.12";
+                    break;
+
+                // Excel 2007
+                case ".xlsx":
+                    mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    break;
+
+                case ".xltx":
+                    mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.template";
+                    break;
+
+                case ".xlsm":
+                    mimeType = "application/vnd.ms-excel.sheet.macroEnabled.12";
+                    break;
+
+                case ".xltm":
+                    mimeType = "application/vnd.ms-excel.template.macroEnabled.12";
+                    break;
+
+                case ".xlam":
+                    mimeType = "application/vnd.ms-excel.addin.macroEnabled.12";
+                    break;
+
+                case ".xlsb":
+                    mimeType = "application/vnd.ms-excel.sheet.binary.macroEnabled.12";
+                    break;
+
+                // Powerpoint
+                case ".pptx":
+                    mimeType = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+                    break;
+
+                case ".potx":
+                    mimeType = "application/vnd.openxmlformats-officedocument.presentationml.template";
+                    break;
+
+                case ".ppsx":
+                    mimeType = "application/vnd.openxmlformats-officedocument.presentationml.slideshow";
+                    break;
+
+                case ".ppam":
+                    mimeType = "application/vnd.ms-powerpoint.addin.macroEnabled.12";
+                    break;
+
+                case ".pptm":
+                case ".potm":
+                    mimeType = "application/vnd.ms-powerpoint.presentation.macroEnabled.12";
+                    break;
+
+                case ".ppsm":
+                    mimeType = "application/vnd.ms-powerpoint.slideshow.macroEnabled.12";
+                    break;
+
+                default:
+                    mimeType = GetMimeFromFileRaw(filePath);
+                    break;
+            }
+
+            return mimeType;
+        }
+
+        /// <summary>
+        /// This handles cases where we can't determine the MIME Type by extension
+        /// </summary>
+        /// <param name="strFileName">The filename</param>
+        /// <returns>The detected MIME type</returns>
+        private static string GetMimeFromFileRaw(string strFileName)
         {
             IntPtr mimeout;
             if (!System.IO.File.Exists(strFileName))

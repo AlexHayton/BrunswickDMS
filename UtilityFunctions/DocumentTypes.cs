@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataLayer.Models;
+using System.IO;
 
 namespace UtilityFunctions
 {
     public class DocumentTypes
     {
-        public static DocumentType GetDocumentTypeFromExtension(string extension)
+        public static DocumentType GetDocumentTypeFromExtension(string fileName)
         {
+            string extension = Path.GetExtension(fileName);
             DocumentType docType = DocumentType.Unknown;
             switch (extension)
             {

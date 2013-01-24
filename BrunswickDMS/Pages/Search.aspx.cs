@@ -13,5 +13,14 @@ namespace BrunswickDMS
         {
 
         }
+
+        /// <summary>
+        /// Normally I would use full-text search against SQL Server here.
+        /// However, neither LocalDB nor Windows Azure's SQL instances support this feature so I'll roll my own.
+        /// </summary>
+        protected void PerformSearch()
+        {
+            
+        }
     }
 }

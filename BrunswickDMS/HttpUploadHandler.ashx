@@ -6,6 +6,7 @@ using System.IO;
 using System.Web.Hosting;
 using System.Diagnostics;
 using System.Linq;
+using System.Collections.Generic;
 using DataLayer.Models;
 using UtilityFunctions;
 
@@ -193,11 +194,18 @@ public class HttpUploadHandler : IHttpHandler {
                 newDocument.Author = existingUser;
                 newDocument.DocumentData = newData;
                 newDocument.Name = fileName;
-                string fileExtension = Path.GetExtension(fileName);
-                newDocument.DocType = DocumentTypes.GetDocumentTypeFromExtension(fileExtension);
-                newDocument.MimeType = MimeTypes.GetMimeFromFile(tempFile);
+                newDocument.DocType = DocumentTypes.GetDocumentTypeFromExtension(fileName);
+                newDocument.MimeType = MimeTypes.GetMimeFromFile(fileName, tempFile);
                 newDocument.DocSize = fileSize;
                 database.Documents.Add(newDocument);
+                
+                // Scan the document for tags and add any that are found to this document.
+                Dictionary<string, DocumentTagLink> tagLinkList = SearchTags.ScanDocumentForTags(database, tempFile, newDocument.DocType, newDocument.MimeType);
+                foreach (DocumentTagLink tagLink in tagLinkList.Values)
+                {
+                    tagLink.Document = newDocument;
+                    database.DocumentTagLinks.Add(tagLink);
+                }
 
                 database.SaveChanges();
             }

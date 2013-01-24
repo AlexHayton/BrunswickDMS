@@ -15,6 +15,13 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
     <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
+    
+    <!-- Add pretty tooltip support -->
+    <script type="text/javascript">
+        $(function () {
+            $(document).tooltip();
+        });
+    </script>
 </head>
 <body>
     <form runat="server">
