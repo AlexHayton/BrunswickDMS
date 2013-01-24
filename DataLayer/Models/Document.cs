@@ -17,6 +17,9 @@ namespace DataLayer.Models
         Unknown
     }
 
+    /// <summary>
+    /// This class stores the metadata for documents.
+    /// </summary>
     [Table("Document")]
     public class Document : BaseData
     {

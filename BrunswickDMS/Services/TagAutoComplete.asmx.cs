@@ -10,7 +10,7 @@ using UtilityFunctions;
 namespace BrunswickDMS.Services
 {
     /// <summary>
-    /// Summary description for TagAutoComplete
+    /// This web service allows the search box to autocomplete valid tags.
     /// </summary>
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
@@ -18,6 +18,13 @@ namespace BrunswickDMS.Services
     [System.Web.Script.Services.ScriptService] 
     public class TagAutoComplete : System.Web.Services.WebService
     {
+        /// <summary>
+        /// Given a search term and a limit on the number of results, this will
+        /// find all the tags that match a given query.
+        /// </summary>
+        /// <param name="searchTerm">The term to be searched for</param>
+        /// <param name="limit">A limit on the number of results</param>
+        /// <returns>A list of results that can be parsed by the jQuery code.</returns>
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public List<TagResult> GetTags(string searchTerm, int limit)

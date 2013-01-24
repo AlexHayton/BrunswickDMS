@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Models
 {
+    /// <summary>
+    /// This class stores the actual data binary data for the documents
+    /// We keep it in a separate table to improve performance.
+    /// </summary>
     public class DocumentData : BaseData
     {
         public DocumentData() : base()

@@ -9,8 +9,16 @@ using System.Web;
 
 namespace UtilityFunctions
 {
+    /// <summary>
+    /// This class contains utility functions for manipulating and querying documents.
+    /// </summary>
     public class DocumentWrangler
     {
+        /// <summary>
+        /// This function gets the document type from its extension
+        /// </summary>
+        /// <param name="fileName">The filename of the document</param>
+        /// <returns>DocumentType</returns>
         public static DocumentType GetDocumentTypeFromExtension(string fileName)
         {
             string extension = Path.GetExtension(fileName);
@@ -44,6 +52,12 @@ namespace UtilityFunctions
             return docType;
         }
 
+        /// <summary>
+        /// This returns a query that can be used to list documents for the current user.
+        /// </summary>
+        /// <param name="database">The database context</param>
+        /// <param name="userName">The current username</param>
+        /// <returns>A queryable object containing the data</returns>
         public static IQueryable<Document> GetDocumentsForCurrentUser(DMSContext database, string userName)
         {
             return database.Documents
@@ -51,6 +65,12 @@ namespace UtilityFunctions
                    .Where(d => d.Author.UserName == userName);
         }
 
+        /// <summary>
+        /// This returns a query that can be used to all documents in descending order.
+        /// </summary>
+        /// <param name="database">The database context</param>
+        /// <param name="userName">The current username</param>
+        /// <returns>A queryable object containing the data</returns>
         public static IQueryable<Document> GetDocumentsInDescendingDateOrder(DMSContext database, string userName)
         {
             return database.Documents
@@ -61,13 +81,19 @@ namespace UtilityFunctions
                                (d.Private == true && d.Author.UserName == userName));
         }
 
-
+        /// <summary>
+        /// This returns a query that can be used to list documents by a given search term.
+        /// </summary>
+        /// <param name="database">The database context</param>
+        /// <param name="userName">The current username</param>
+        /// <param name="searchTerm">The search term</param>
+        /// <returns>A queryable object containing the data</returns>
         public static IQueryable<Document> GetDocumentsBySearchTerm(DMSContext database, string userName, string searchTerm)
         {
-            searchTerm = searchTerm.ToUpperInvariant();
             // TODO: I'd Prefer to use full text search here, if the database supports it!
             // Unfortunately SQL Azure and LocalDB both don't support this feature.
             // Instead, for now search based on document name and tags.
+            searchTerm = searchTerm.ToUpperInvariant();
             
             // Construct a query to find all documents that contain the term in the name.
             IQueryable<Document> documents = (from d in database.Documents.Include("Author")

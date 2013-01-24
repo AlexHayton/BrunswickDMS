@@ -3,6 +3,7 @@
 <%@ Register TagPrefix="uc" TagName="DocumentListView" Src="~/User Controls/DocumentListView.ascx" %>
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
   <script type="text/javascript">
+      <!-- Set up tabs -->
       $(function() {
           $('#tabs').tabs({
               fx: [{ opacity: 'toggle', duration: 'fast' },   // hide option

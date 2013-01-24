@@ -9,7 +9,9 @@ using UtilityFunctions;
 namespace BrunswickDMS
 {
     /// <summary>
-    /// Summary description for RetrieveDocument
+    /// This handler is used to retrieve documents from the database
+    /// We need to output the data and also the correct headers for the browser to show it.
+    /// Some files can be shown in-browser, the rest we will send as an attachment.
     /// </summary>
     public class RetrieveDocument : IHttpHandler
     {

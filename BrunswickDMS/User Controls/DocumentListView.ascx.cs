@@ -26,6 +26,9 @@ namespace BrunswickDMS
 
         private string _searchTerm = string.Empty;
 
+        /// <summary>
+        /// Used to store the search terms.
+        /// </summary>
         public string SearchTerm
         {
             get { return _searchTerm; }
@@ -35,14 +38,16 @@ namespace BrunswickDMS
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-            }
-
             // Bind the data on postback as well.
             this.DataBind();
         }
 
+        /// <summary>
+        /// Called whenever someone presses the 'Delete' button.
+        /// We want to delete the correct row and then requery the data.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void delete_OnClick(object sender, EventArgs e)
         {
             Button btn = sender as Button;
@@ -72,10 +77,13 @@ namespace BrunswickDMS
                 database.SaveChanges();
             }
 
-            // Bind the data on postback as well.
+            // Rebind to update the view.
             this.DataBind();
         }
 
+        /// <summary>
+        /// This enumeration is used to choose the mode of operation of this view.
+        /// </summary>
         public enum DocumentQueryMode
         {
             All,
@@ -84,6 +92,10 @@ namespace BrunswickDMS
             Search
         }
 
+        /// <summary>
+        /// This function delegates to the relevant function in DocumentWrangler.
+        /// </summary>
+        /// <returns>A queryable collection of documents that will be used in the view.</returns>
         public IQueryable<Document> GetDocuments()
         {
             IQueryable<Document> query = null;
@@ -122,8 +134,11 @@ namespace BrunswickDMS
             return query;
         }
 
-       
-
+        /// <summary>
+        /// This function converts a size in bytes to something a bit easier to read.
+        /// </summary>
+        /// <param name="fileSizeObject">The file size object.</param>
+        /// <returns>A representation of the filesize e.g. "32MB"</returns>
         protected string GetHumanReadableFileSize(object fileSizeObject)
         {
             long? nullableFileSize = fileSizeObject as long?;
@@ -141,6 +156,11 @@ namespace BrunswickDMS
             return readableFileSize;
         }
 
+        /// <summary>
+        /// This function is used to get the download link for a given document.
+        /// </summary>
+        /// <param name="documentIdObject">The document ID object</param>
+        /// <returns>A URL to the download link</returns>
         protected string GetDownloadLinkForDocument(object documentIdObject)
         {
             int? documentId = documentIdObject as int?;
@@ -153,6 +173,12 @@ namespace BrunswickDMS
             return downloadLink;
         }
 
+        /// <summary>
+        /// This function is used to get the icon for the document
+        /// </summary>
+        /// <param name="documentTypeObject">The type of the document</param>
+        /// <param name="documentIdObject">The ID of the document</param>
+        /// <returns>The URL to an icon suitable for showing this document</returns>
         protected string GetIconForDocument(object documentTypeObject, object documentIdObject)
         {
             DocumentType? docType = documentTypeObject as DocumentType?;

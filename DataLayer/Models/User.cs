@@ -7,6 +7,9 @@ using System.Web;
 
 namespace DataLayer.Models
 {
+    /// <summary>
+    /// This class stores all the information about users in the system.
+    /// </summary>
     [Table("User")]
     public class User : BaseData
     {

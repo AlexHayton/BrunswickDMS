@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Models
 {
+    /// <summary>
+    /// This class links documents to any relevant tags.
+    /// </summary>
     public class DocumentTagLink : BaseData
     {
         public DocumentTagLink() : base()

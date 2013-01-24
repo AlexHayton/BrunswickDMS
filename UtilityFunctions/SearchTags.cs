@@ -10,8 +10,19 @@ using DocumentFormat.OpenXml.Packaging;
 
 namespace UtilityFunctions
 {
+    /// <summary>
+    /// A class containing utility functions for working with Tags.
+    /// </summary>
     public class SearchTags
     {
+        /// <summary>
+        /// This function is used to return a list of tags that start with a given string
+        /// Used for autocomplete on the search box.
+        /// </summary>
+        /// <param name="database">The database context</param>
+        /// <param name="searchTerm">The search term that we're using</param>
+        /// <param name="limit">The maximum number of tags to return</param>
+        /// <returns>A queryable object containing the tags</returns>
         public static List<string> SearchForTags(DMSContext database, string searchTerm, int limit)
         {
             List<string> results = new List<string>();
@@ -34,6 +45,14 @@ namespace UtilityFunctions
             return results;
         }
 
+        /// <summary>
+        /// Scans a document and extracts its tags in a format suitable for saving to the database.
+        /// </summary>
+        /// <param name="database">The database context</param>
+        /// <param name="fileName">The filename of the document</param>
+        /// <param name="docType">The document type of the document</param>
+        /// <param name="mimeType">The Mime Type of the document</param>
+        /// <returns>A list of tags that were returned, ready to insert into the database.</returns>
         public static Dictionary<string, DocumentTagLink> ScanDocumentForTags(DMSContext database, string fileName, DocumentType docType, string mimeType)
         {
             Dictionary<string, DocumentTagLink> tagsList = null;
@@ -57,13 +76,21 @@ namespace UtilityFunctions
             return tagsList;
         }
 
+        /// <summary>
+        /// Given a list of words, this will convert each one into the appropriate Tag
+        /// </summary>
+        /// <param name="database">The database context</param>
+        /// <param name="plainText">The plain text content of the document</param>
+        /// <returns>A list of tags that were returned, ready to insert into the database.</returns>
         private static Dictionary<string, DocumentTagLink> ConvertWordsIntoTags(DMSContext database, string plainText)
         {
             Dictionary<string, DocumentTagLink> tagsList = new Dictionary<string, DocumentTagLink>();
             plainText = plainText.ToUpperInvariant();
             List<String> words = new List<string>(plainText.Split(null as string[], StringSplitOptions.RemoveEmptyEntries));
             CleanUpWords(words);
-
+            
+            // Loop over the list of words.
+            // For each one, find a matching tag and create a new one if we couldn't.
             if (words.Count > 0)
             {
                 foreach (string word in words)
@@ -100,7 +127,7 @@ namespace UtilityFunctions
         }
 
         /// <summary>
-        /// Removes any hanging full stops, commas etc. from the words.
+        /// Removes any hanging full stops, commas etc. from the words list.
         /// </summary>
         /// <param name="words"></param>
         private static void CleanUpWords(List<string> words)
@@ -133,6 +160,11 @@ namespace UtilityFunctions
             }
         }
 
+        /// <summary>
+        /// Use the Open XML SDK to open the word document and get its text.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         private static string ExtractWordDocumentText(string fileName)
         {
             using (WordprocessingDocument package = WordprocessingDocument.Open(fileName, true))
@@ -144,7 +176,7 @@ namespace UtilityFunctions
                     return string.Empty;
                 }
 
-                sb.Append(GetPlainText(element));
+                sb.Append(GetWordPlainText(element));
 
                 // Use the results of the string builder to get the plain text.
                 return sb.ToString();
@@ -153,11 +185,11 @@ namespace UtilityFunctions
         }
 
         /// <summary> 
-        ///  Read Plain Text in all XmlElements of word document 
+        /// Read Plain Text in all XmlElements of word document 
         /// </summary> 
         /// <param name="element">XmlElement in document</param> 
         /// <returns>Plain Text in XmlElement</returns> 
-        private static string GetPlainText(OpenXmlElement element)
+        private static string GetWordPlainText(OpenXmlElement element)
         {
             StringBuilder PlainTextInWord = new StringBuilder();
             foreach (OpenXmlElement section in element.Elements())
@@ -181,12 +213,12 @@ namespace UtilityFunctions
 
                     // Paragraph 
                     case "p":
-                        PlainTextInWord.Append(GetPlainText(section));
+                        PlainTextInWord.Append(GetWordPlainText(section));
                         PlainTextInWord.AppendLine(Environment.NewLine);
                         break;
 
                     default:
-                        PlainTextInWord.Append(GetPlainText(section));
+                        PlainTextInWord.Append(GetWordPlainText(section));
                         break;
                 }
             }

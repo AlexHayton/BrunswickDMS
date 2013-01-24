@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace UtilityFunctions
 {
+    /// <summary>
+    /// A class containing utility functions for Mime Types.
+    /// </summary>
     public class MimeTypes
     {
         // MIME Type detection code from http://forums.asp.net/t/1041821.aspx/1

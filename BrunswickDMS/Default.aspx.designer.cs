@@ -7,11 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BrunswickDMS
-{
-
-
-    public partial class _Default
-    {
+namespace BrunswickDMS {
+    
+    
+    public partial class _Default {
+        
+        /// <summary>
+        /// SearchBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::BrunswickDMS.User_Controls.DMSSearchBox SearchBox;
     }
 }

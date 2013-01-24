@@ -1,4 +1,8 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="DocumentListView.ascx.cs" Inherits="BrunswickDMS.DocumentListView" %>
+<!-- This list view is used wherever we want to display documents
+     Key features are that it can refresh independently of the rest of the page
+     It also supports a parameter called QueryMode that affects its behaviour and
+     a parameter called SearchTerm that allows filtering by text -->
 <asp:UpdatePanel ID="DocumentListUpdatePanel" 
                  UpdateMode="Conditional"
                  runat="server">

@@ -2,6 +2,30 @@
 <%@ Register TagPrefix="uc" TagName="DMSSearchBox" Src="~/User Controls/DMSSearchBox.ascx" %>
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
     <script type="text/javascript">
+        var slCtl = null;
+        function pluginLoaded(sender) {
+            //IMPORTANT: Make sure this is the same ID as the ID in your <OBJECT tag (<object id="MultiFileUploader" etc)
+            slCtl = document.getElementById("MultiFileUploader");
+
+            // Register callback events.
+            slCtl.Content.Files.AllFilesFinished = AllFilesFinished;
+            slCtl.Content.Files.FileAdded = FirstFileAdded;
+        }
+
+        // These functions are used to show the hints for each step.
+        function FirstFileAdded() {
+            $('#BeforeUpload').hide('fast');
+            $('#ReadyToUpload').show('fast');
+            $('#AfterUpload').hide('fast');
+        }
+
+        function AllFilesFinished() {
+            $('#BeforeUpload').hide('fast');
+            $('#ReadyToUpload').hide('fast');
+            $('#AfterUpload').show('fast');
+        }
+
+        // This gets triggered if silverlight errors on us.
         function onSilverlightError(sender, args) {
 
             var appSource = "";
@@ -33,6 +57,7 @@
             throw new Error(errMsg);
         }
 
+        // Set up the tabs.
         $(function () {
             $('#tabs').tabs({
                 fx: [{ opacity: 'toggle', duration: 'fast' },   // hide option
@@ -61,29 +86,39 @@
 </asp:Content>
 
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
-    <h3>What now?</h3>
-    <ol class="round">
-        <li class="one">
-            <h5>Select documents to upload.</h5>
-            Click "Select Files", then choose the documents from the file dialog.
-        </li>
-        <li class="two">
-            <h5>Upload the files.</h5>
-            Click 'Upload' and wait for the documents to upload.
-        </li>
-        <li class="two">
-            <h5>Search or browse.</h5>
-            Either click the Browse button in the top menu or type a search term to find documents.<br />
-            Microsoft Word 2007 documents will be automatically scanned for terms, which should then appear in the search box as you type.
-        </li>
-    </ol>
-
     <div id="tabs">
       <ul>
-        <li><a href="#tabs-1">Found documents</a></li>
+        <li><a href="#tabs-1">Upload documents</a></li>
       </ul>
+      <!-- Declare three tabs here, they are then displayed sequentially as the user gets through the wizard -->
       <div id="tabs-1">
-        <h2>Upload files:</h2>
+        <div id="BeforeUpload">
+            <ol class="round">
+                <li class="one">
+                    <h5>Select documents to upload.</h5>
+                    Click "Select Files", then choose the documents from the file dialog.
+                </li>
+            </ol>
+        </div>
+        <div id="ReadyToUpload" style="display:none;">
+            <ol class="round">
+                <li class="two">
+                    <h5>Upload the files.</h5>
+                    Click 'Upload' and wait for the documents to upload.
+                </li>
+            </ol>
+        </div>
+        <div id="AfterUpload" style="display:none;">
+            <ol class="round">
+                <li class="three">
+                    <h5>Browse</h5>
+                    Either click the <a href="/Pages/Browse.aspx">Browse</a> button in the top menu or type a <a href="/Pages/Search.aspx">search</a> term to find documents.<br />
+                    <em>Microsoft Word 2007 documents will be automatically scanned for terms, which should then appear in the search box as you type.</em>
+                </li>
+            </ol>
+        </div>
+
+        <!-- This is a Silverlight-based file uploader. See the NuGet packages for more information. -->
         <div id="silverlightControlHost" >
             <object id="MultiFileUploader" data="data:application/x-silverlight-2," type="application/x-silverlight-2" style="text-align: center; width:600px; height:350px;">
                 <param name="source" value="/ClientBin/mpost.SilverlightMultiFileUpload.xap" />

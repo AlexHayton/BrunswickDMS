@@ -21,11 +21,11 @@ namespace BrunswickDMS
             //    appId: "your Facebook app id",
             //    appSecret: "your Facebook app secret");
 
-            OpenAuth.AuthenticationClients.AddMicrosoft(
-                clientId: "00000000480E88B3",
-                clientSecret: "ADb8NaYry0XLklPfjYIbGssIYEa4QkZG");
+            //OpenAuth.AuthenticationClients.AddMicrosoft(
+            //    clientId: "00000000480E88B3",
+            //    clientSecret: "ADb8NaYry0XLklPfjYIbGssIYEa4QkZG");
 
-            OpenAuth.AuthenticationClients.AddGoogle();
+            //OpenAuth.AuthenticationClients.AddGoogle();
         }
     }
 }

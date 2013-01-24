@@ -7,6 +7,9 @@ using System.Web;
 
 namespace DataLayer.Models
 {
+    /// <summary>
+    /// These were created for audit items. This functionality is unfinished.
+    /// </summary>
     public class AuditItem : BaseData
     {
         public AuditItem() : base()

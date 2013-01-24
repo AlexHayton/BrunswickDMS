@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Models
 {
+    /// <summary>
+    /// This class allows tags from multiple documents to share common attributes.
+    /// This could be used to make a Tag Cloud or something.
+    /// </summary>
     public class Tag : BaseData
     {
         public Tag() : base()
