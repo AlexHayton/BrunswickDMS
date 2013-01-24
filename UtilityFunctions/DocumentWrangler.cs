@@ -65,23 +65,35 @@ namespace UtilityFunctions
         public static IQueryable<Document> GetDocumentsBySearchTerm(DMSContext database, string userName, string searchTerm)
         {
             searchTerm = searchTerm.ToUpperInvariant();
-            // TODO: Prefer to use full text search here, if database supports it!
+            // TODO: I'd Prefer to use full text search here, if the database supports it!
+            // Unfortunately SQL Azure and LocalDB both don't support this feature.
             // Instead, for now search based on document name and tags.
-            return (from d in database.Documents.Include("Author")
-                    from l in database.DocumentTagLinks
-                        .Where(l => l.Document == d)
-                        .DefaultIfEmpty()
-                    from t in database.Tags
-                        .Where(t => t == l.Tag)
-                        .DefaultIfEmpty()
-                    where (((d.Private == false)
-                            ||
-                            (d.Private == true && d.Author.UserName == userName))
-                            &&
-                            (t.TagName.ToUpper().Contains(searchTerm))
-                            ||
-                            (d.Name.ToUpper().Contains(searchTerm)))
-                    select d);
+            
+            // Construct a query to find all documents that contain the term in the name.
+            IQueryable<Document> documents = (from d in database.Documents.Include("Author")
+                                                 where (((d.Private == false)
+                                                         ||
+                                                         (d.Private == true && d.Author.UserName == userName))
+                                                         &&
+                                                         (d.Name.ToUpper().Contains(searchTerm)))
+                                                 select d)
+                                                 .Union(
+            // Construct a query to find all documents that contain the term in a tag.
+                                                (from d in database.Documents.Include("Author")
+                                                from l in database.DocumentTagLinks
+                                                    .Where(l => l.Document == d)
+                                                    .DefaultIfEmpty()
+                                                from t in database.Tags
+                                                    .Where(t => t == l.Tag)
+                                                    .DefaultIfEmpty()
+                                                where (((d.Private == false)
+                                                        ||
+                                                        (d.Private == true && d.Author.UserName == userName))
+                                                        &&
+                                                        (t.TagName.ToUpper().Contains(searchTerm)))
+                                                select d));
+
+            return documents;
         }
     }
 }

@@ -15,6 +15,9 @@ namespace BrunswickDMS
 
         private DocumentQueryMode _queryMode = DocumentQueryMode.All;
 
+        /// <summary>
+        /// Used to store the kind of query being run.
+        /// </summary>
         public DocumentQueryMode QueryMode
         {
             get { return _queryMode; }
@@ -32,7 +35,45 @@ namespace BrunswickDMS
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+            }
 
+            // Bind the data on postback as well.
+            this.DataBind();
+        }
+
+        protected void delete_OnClick(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            ListViewItem item = btn.NamingContainer as ListViewItem;
+            Label documentIdField = item.FindControl("DocumentId") as Label;
+
+            if (documentIdField != null)
+            {
+                int documentId = 0;
+                bool success = int.TryParse(documentIdField.Text, out documentId);
+
+                Document document = database.Documents
+                                    .Where(d => d.DocumentId == documentId)
+                                    .SingleOrDefault();
+
+                List<DocumentTagLink> tagLinkList = database.DocumentTagLinks
+                                                    .Include("Document")
+                                                    .Where(l => l.Document.DocumentId == documentId)
+                                                    .ToList();
+
+                for (int i = tagLinkList.Count - 1; i >= 0; i--)
+                {
+                    database.DocumentTagLinks.Remove(tagLinkList[i]);
+                }
+
+                database.Documents.Remove(document);
+                database.SaveChanges();
+            }
+
+            // Bind the data on postback as well.
+            this.DataBind();
         }
 
         public enum DocumentQueryMode
@@ -59,7 +100,15 @@ namespace BrunswickDMS
                         break;
 
                     case DocumentQueryMode.Search:
-                        query = DocumentWrangler.GetDocumentsBySearchTerm(database, userName, SearchTerm);
+                        // Don't try and search if the term is invalid.
+                        if (string.IsNullOrWhiteSpace(SearchTerm))
+                        {
+                            query = database.Documents.Where(d => false);
+                        }
+                        else
+                        {
+                            query = DocumentWrangler.GetDocumentsBySearchTerm(database, userName, SearchTerm);
+                        }
                         break;
 
                     case DocumentQueryMode.All:

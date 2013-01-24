@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using UtilityFunctions;
 
 namespace BrunswickDMS
 {
@@ -49,6 +50,11 @@ namespace BrunswickDMS
 
             // If we've passed all the previous checks, send the document.
             context.Response.ContentType = documentMetadata.MimeType;
+            // Send a header for downloading the document if it can't be viewed in-place.
+            if (!MimeTypes.CanBeInstantPreviewed(documentMetadata.MimeType))
+            {
+                context.Response.AddHeader("content-disposition", "attachment; filename=" + documentMetadata.Name);
+            }
             byte[] bytesToSend = documentMetadata.DocumentData.FileData;
             using (BinaryWriter writer = new BinaryWriter(context.Response.OutputStream))
             {

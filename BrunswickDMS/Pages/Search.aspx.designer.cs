@@ -13,31 +13,13 @@ namespace BrunswickDMS {
     public partial class Search {
         
         /// <summary>
-        /// SearchBoxDiv control.
+        /// SearchBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl SearchBoxDiv;
-        
-        /// <summary>
-        /// SearchTerm control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField SearchTerm;
-        
-        /// <summary>
-        /// SearchNow control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SearchNow;
+        protected global::BrunswickDMS.User_Controls.DMSSearchBox SearchBox;
         
         /// <summary>
         /// SearchResultsDiv control.

@@ -43,7 +43,7 @@
         <div class="content-wrapper">
             <div class="float-left">
                 <p class="site-title">
-                    <a runat="server" href="~/">your logo here</a>
+                    <a runat="server" href="~/"><img src="/Images/logo-brunswick.jpg" style="width:8em;"/></a>
                 </p>
             </div>
             <div class="float-right">
@@ -67,7 +67,6 @@
                 <nav>
                     <ul id="menu">
                         <li><a runat="server" href="~/Pages/Browse.aspx">Browse</a></li>
-                        <li><a runat="server" href="~/Pages/Search.aspx">Search</a></li>
                         <li><a runat="server" href="~/Pages/Upload.aspx">Upload</a></li>
                     </ul>
                 </nav>
@@ -83,7 +82,7 @@
     <footer>
         <div class="content-wrapper">
             <div class="float-left">
-                <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
+                <p>&copy; <%: DateTime.Now.Year %> - Alex Hayton</p>
             </div>
         </div>
     </footer>

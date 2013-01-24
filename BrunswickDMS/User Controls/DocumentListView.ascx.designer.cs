@@ -13,6 +13,24 @@ namespace BrunswickDMS {
     public partial class DocumentListView {
         
         /// <summary>
+        /// DocumentListUpdatePanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel DocumentListUpdatePanel;
+        
+        /// <summary>
+        /// UpdatePanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button UpdatePanel;
+        
+        /// <summary>
         /// DocumentsView control.
         /// </summary>
         /// <remarks>

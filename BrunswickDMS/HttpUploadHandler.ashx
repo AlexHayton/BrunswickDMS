@@ -191,12 +191,21 @@ public class HttpUploadHandler : IHttpHandler {
                         throw new ArgumentOutOfRangeException("The uploading user does not exist in the database!");
                     }
 
+                    DocumentType docType = DocumentWrangler.GetDocumentTypeFromExtension(fileName);
+                    string mimeType = MimeTypes.GetMimeFromFile(fileName, tempFile);
+                    
+                    // Block executable types for security.
+                    if (mimeType == "application/x-msdownload")
+                    {
+                        throw new ArgumentOutOfRangeException("Cannot upload executables to this system for security reasons!");
+                    }
+
                     Document newDocument = new Document();
                     newDocument.Author = existingUser;
                     newDocument.DocumentData = newData;
                     newDocument.Name = fileName;
-                    newDocument.DocType = DocumentTypes.GetDocumentTypeFromExtension(fileName);
-                    newDocument.MimeType = MimeTypes.GetMimeFromFile(fileName, tempFile);
+                    newDocument.DocType = docType;
+                    newDocument.MimeType = mimeType;
                     newDocument.DocSize = fileSize;
                     database.Documents.Add(newDocument);
 

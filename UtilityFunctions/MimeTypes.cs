@@ -107,6 +107,30 @@ namespace UtilityFunctions
             return mimeType;
         }
 
+        public static bool CanBeInstantPreviewed(string MimeType)
+        {
+            bool instantPreview;
+            switch (MimeType)
+            {
+                case "application/pdf":
+                case "application/x-pdf":
+                    instantPreview = true;
+                    break;
+
+                default:
+                    instantPreview = false;
+                    break;
+            }
+
+            // Also allow all images to be instant-previewed.
+            if (MimeType.ToLowerInvariant().StartsWith("image/"))
+            {
+                instantPreview = true;
+            }
+
+            return instantPreview;
+        }
+
         /// <summary>
         /// This handles cases where we can't determine the MIME Type by extension
         /// </summary>

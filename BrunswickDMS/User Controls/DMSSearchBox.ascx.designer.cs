@@ -7,18 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BrunswickDMS {
+namespace BrunswickDMS.User_Controls {
     
     
-    public partial class Upload {
+    public partial class DMSSearchBox {
         
         /// <summary>
-        /// SearchBox control.
+        /// SearchBoxDiv control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::BrunswickDMS.User_Controls.DMSSearchBox SearchBox;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl SearchBoxDiv;
     }
 }

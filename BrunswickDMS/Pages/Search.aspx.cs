@@ -11,24 +11,14 @@ namespace BrunswickDMS
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Handle postbacks here
-            if (!IsPostBack)
+            if (string.IsNullOrEmpty(Request.Form["AutoCompleteText"]))
             {
-                SearchTerm.Value = string.Empty;
-                SearchResultsDiv.Visible = false;
+                this.SearchBox.SearchTerm.Value = string.Empty;
             }
             else
             {
-                if (this.SearchTerm.Value.Length > 0)
-                {
-                    this.SearchResultsDiv.Visible = true;
-                    this.SearchListView.SearchTerm = this.SearchTerm.Value;
-                    this.SearchListView.DataBind();
-                }
-                else
-                {
-                    this.SearchResultsDiv.Visible = false;
-                }
+                this.SearchBox.SearchTerm.Value = Request.Form["AutoCompleteText"];
+                this.SearchListView.SearchTerm = Request.Form["AutoCompleteText"];
             }
         }
     }
