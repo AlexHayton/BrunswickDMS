@@ -5,14 +5,30 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using UtilityFunctions;
 
 namespace BrunswickDMS
 {
     public partial class DocumentListView : System.Web.UI.UserControl
     {
-        DMSContext database = new DataLayer.Models.DMSContext();
+        DMSContext database = new DMSContext();
 
-        public DocumentQueryMode QueryMode { get; set; }
+        private DocumentQueryMode _queryMode = DocumentQueryMode.All;
+
+        public DocumentQueryMode QueryMode
+        {
+            get { return _queryMode; }
+            set { _queryMode = value; }
+        }
+
+        private string _searchTerm = string.Empty;
+
+        public string SearchTerm
+        {
+            get { return _searchTerm; }
+            set { _searchTerm = value; }
+        }
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -23,57 +39,41 @@ namespace BrunswickDMS
         {
             All,
             CurrentUser,
-            DescendingDateOrder
+            DescendingDateOrder,
+            Search
         }
 
         public IQueryable<Document> GetDocuments()
         {
             IQueryable<Document> query = null;
-            switch (QueryMode)
+            string userName = HttpContext.Current.User.Identity.Name;
             {
-                case DocumentQueryMode.CurrentUser:
-                    query = GetDocumentsForCurrentUser();
-                    break;
+                switch (QueryMode)
+                {
+                    case DocumentQueryMode.CurrentUser:
+                        query = DocumentWrangler.GetDocumentsForCurrentUser(database, userName);
+                        break;
 
-                case DocumentQueryMode.DescendingDateOrder:
-                    query = GetDocumentsInDescendingDateOrder();
-                    break;
+                    case DocumentQueryMode.DescendingDateOrder:
+                        query = DocumentWrangler.GetDocumentsInDescendingDateOrder(database, userName);
+                        break;
 
-                case DocumentQueryMode.All:
-                default:
-                    // Fallback : show all documents!
-                    query = database.Documents.Include("Author");
-                    break;
+                    case DocumentQueryMode.Search:
+                        query = DocumentWrangler.GetDocumentsBySearchTerm(database, userName, SearchTerm);
+                        break;
+
+                    case DocumentQueryMode.All:
+                    default:
+                        // Fallback : show all documents!
+                        query = database.Documents.Include("Author");
+                        break;
+                }
             }
            
             return query;
         }
 
-        public IQueryable<Document> GetDocumentsForCurrentUser()
-        {
-            string userName = HttpContext.Current.User.Identity.Name;
-            return database.Documents
-                   .Include("Author")
-                   .Where(d => d.Author.UserName == userName);
-        }
-
-        public IQueryable<Document> GetDocumentsInDescendingDateOrder()
-        {
-            return database.Documents
-                   .Include("Author")
-                   .OrderByDescending(d => d.CreatedDate);
-        }
-
-
-        public IQueryable<Document> GetDocumentsBySearchTerm()
-        {
-            string userName = HttpContext.Current.User.Identity.Name;
-            return (from d in database.Documents.Include("Author")
-                    where ((d.Private == false) 
-                           || 
-                           (d.Private == true && d.Author.UserName == userName))
-                    select d);
-        }
+       
 
         protected string GetHumanReadableFileSize(object fileSizeObject)
         {

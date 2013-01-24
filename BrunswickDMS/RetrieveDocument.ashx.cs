@@ -12,6 +12,7 @@ namespace BrunswickDMS
     /// </summary>
     public class RetrieveDocument : IHttpHandler
     {
+        // Re-use the database context here.
         DMSContext database = new DMSContext();
 
         public void ProcessRequest(HttpContext context)
@@ -26,12 +27,11 @@ namespace BrunswickDMS
             }
 
             // Find the document with the corresponding ID in the database.
-            /*var documentMetadata = database.Documents.SingleOrDefault(
-                d => d.DocumentId == documentId);*/
             var documentMetadata = database.Documents
                         .Include("Author")
                         .Include("DocumentData")
                         .FirstOrDefault(d => d.DocumentId == documentId);
+
             // Abort if we could not find that document.
             if (documentMetadata == null)
             {
@@ -60,7 +60,7 @@ namespace BrunswickDMS
         {
             get
             {
-                return false;
+                return true;
             }
         }
     }

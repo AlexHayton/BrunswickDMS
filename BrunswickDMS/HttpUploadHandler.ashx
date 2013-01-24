@@ -27,8 +27,6 @@ public class HttpUploadHandler : IHttpHandler {
     private bool _firstChunk;
     private long _startByte;
 
-    private DMSContext database = new DMSContext();
-
     StreamWriter _debugFileStreamWriter;
     TextWriterTraceListener _debugListener;
        
@@ -159,60 +157,64 @@ public class HttpUploadHandler : IHttpHandler {
     /// <param name="parameters"></param>
     protected virtual void SaveDocumentToDatabase(string tempFile, string userName, string fileName, string parameters)
     {
-        // Save the document data to the database. 
-        // The limit of 10MB prevents huge files being uploaded here and associated issues with memory usage.
-        // The document data goes in its own table, to speed up access for metadata.
-        DocumentData newData = null;
-        long fileSize = 0;
-        try
+        using (DMSContext database = new DMSContext())
         {
-            newData = new DocumentData();
-            byte[] fileData = File.ReadAllBytes(tempFile);
-            fileSize = fileData.LongLength;
-            newData.FileData = fileData;
-            database.DocumentDataFiles.Add(newData);
-        }
-        catch (Exception e)
-        {
-            throw new FileNotFoundException("Could not access the temporary file to read into the database! See inner exception for more details.", e);
-        }
 
-        try
-        {
-            if (newData != null)
+            // Save the document data to the database. 
+            // The limit of 10MB prevents huge files being uploaded here and associated issues with memory usage.
+            // The document data goes in its own table, to speed up access for metadata.
+            DocumentData newData = null;
+            long fileSize = 0;
+            try
             {
-                // Find the user that uploaded the document.
-                // Link by foreign key.
-                var existingUser = database.Users.SingleOrDefault(
-                    u => u.UserName == userName);
-                if (existingUser == null)
-                {
-                    throw new ArgumentOutOfRangeException("The uploading user does not exist in the database!");
-                }
-
-                Document newDocument = new Document();
-                newDocument.Author = existingUser;
-                newDocument.DocumentData = newData;
-                newDocument.Name = fileName;
-                newDocument.DocType = DocumentTypes.GetDocumentTypeFromExtension(fileName);
-                newDocument.MimeType = MimeTypes.GetMimeFromFile(fileName, tempFile);
-                newDocument.DocSize = fileSize;
-                database.Documents.Add(newDocument);
-                
-                // Scan the document for tags and add any that are found to this document.
-                Dictionary<string, DocumentTagLink> tagLinkList = SearchTags.ScanDocumentForTags(database, tempFile, newDocument.DocType, newDocument.MimeType);
-                foreach (DocumentTagLink tagLink in tagLinkList.Values)
-                {
-                    tagLink.Document = newDocument;
-                    database.DocumentTagLinks.Add(tagLink);
-                }
-
-                database.SaveChanges();
+                newData = new DocumentData();
+                byte[] fileData = File.ReadAllBytes(tempFile);
+                fileSize = fileData.LongLength;
+                newData.FileData = fileData;
+                database.DocumentDataFiles.Add(newData);
             }
-        }
-        catch (Exception e)
-        {
-            throw new FileNotFoundException("Could not save the document into the database! See inner exception for more details.", e);
+            catch (Exception e)
+            {
+                throw new FileNotFoundException("Could not access the temporary file to read into the database! See inner exception for more details.", e);
+            }
+
+            try
+            {
+                if (newData != null)
+                {
+                    // Find the user that uploaded the document.
+                    // Link by foreign key.
+                    var existingUser = database.Users.SingleOrDefault(
+                        u => u.UserName == userName);
+                    if (existingUser == null)
+                    {
+                        throw new ArgumentOutOfRangeException("The uploading user does not exist in the database!");
+                    }
+
+                    Document newDocument = new Document();
+                    newDocument.Author = existingUser;
+                    newDocument.DocumentData = newData;
+                    newDocument.Name = fileName;
+                    newDocument.DocType = DocumentTypes.GetDocumentTypeFromExtension(fileName);
+                    newDocument.MimeType = MimeTypes.GetMimeFromFile(fileName, tempFile);
+                    newDocument.DocSize = fileSize;
+                    database.Documents.Add(newDocument);
+
+                    // Scan the document for tags and add any that are found to this document.
+                    Dictionary<string, DocumentTagLink> tagLinkList = SearchTags.ScanDocumentForTags(database, tempFile, newDocument.DocType, newDocument.MimeType);
+                    foreach (DocumentTagLink tagLink in tagLinkList.Values)
+                    {
+                        tagLink.Document = newDocument;
+                        database.DocumentTagLinks.Add(tagLink);
+                    }
+
+                    database.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new FileNotFoundException("Could not save the document into the database! See inner exception for more details.", e);
+            }
         }
     }
     

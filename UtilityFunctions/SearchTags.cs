@@ -12,6 +12,28 @@ namespace UtilityFunctions
 {
     public class SearchTags
     {
+        public static List<string> SearchForTags(DMSContext database, string searchTerm, int limit)
+        {
+            List<string> results = new List<string>();
+
+            var tagList = (from t in database.Tags
+                           join l in database.DocumentTagLinks on t equals l.Tag
+                           where t.TagName.StartsWith(searchTerm)
+                           group l by t.TagName into g
+                           select new
+                           {
+                               Name = g.Key,
+                               Sum = g.Sum(l => l.Count),
+                           }).Take(limit);
+
+            foreach (var foundTag in tagList)
+            {
+                results.Add(foundTag.Name);
+            }
+
+            return results;
+        }
+
         public static Dictionary<string, DocumentTagLink> ScanDocumentForTags(DMSContext database, string fileName, DocumentType docType, string mimeType)
         {
             Dictionary<string, DocumentTagLink> tagsList = null;

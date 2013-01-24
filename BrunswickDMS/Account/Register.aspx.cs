@@ -12,8 +12,6 @@ namespace BrunswickDMS.Account
 {
     public partial class Register : Page
     {
-        private DMSContext database = new DMSContext();
-
         protected void Page_Load(object sender, EventArgs e)
         {
             RegisterUser.ContinueDestinationPageUrl = Request.QueryString["ReturnUrl"];
@@ -45,28 +43,31 @@ namespace BrunswickDMS.Account
             TextBox FirstNameInput = wizard.CreateUserStep.ContentTemplateContainer.FindControl("FirstName") as TextBox;
             TextBox LastNameInput = wizard.CreateUserStep.ContentTemplateContainer.FindControl("LastName") as TextBox;
 
-            // Check whether this user already exists first...
-            // Create a new row if it doesn't exist or update the old one if it does.
-            var existingUser = database.Users.SingleOrDefault(
-                u => u.UserName == wizard.UserName);
-            if (existingUser == null)
+            using (DMSContext database = new DMSContext())
             {
-                User user = new User();
-                user.UserName = wizard.UserName;
-                user.Email = wizard.Email;
-                user.FirstName = FirstNameInput.Text;
-                user.LastName = LastNameInput.Text;
+                // Check whether this user already exists first...
+                // Create a new row if it doesn't exist or update the old one if it does.
+                var existingUser = database.Users.SingleOrDefault(
+                    u => u.UserName == wizard.UserName);
+                if (existingUser == null)
+                {
+                    User user = new User();
+                    user.UserName = wizard.UserName;
+                    user.Email = wizard.Email;
+                    user.FirstName = FirstNameInput.Text;
+                    user.LastName = LastNameInput.Text;
 
-                database.Users.Add(user);
-                database.SaveChanges();
-            }
-            else
-            {
-                existingUser.UserName = wizard.UserName;
-                existingUser.Email = wizard.Email;
-                existingUser.FirstName = FirstNameInput.Text;
-                existingUser.LastName = LastNameInput.Text;
-                database.SaveChanges();
+                    database.Users.Add(user);
+                    database.SaveChanges();
+                }
+                else
+                {
+                    existingUser.UserName = wizard.UserName;
+                    existingUser.Email = wizard.Email;
+                    existingUser.FirstName = FirstNameInput.Text;
+                    existingUser.LastName = LastNameInput.Text;
+                    database.SaveChanges();
+                }
             }
         }
     }

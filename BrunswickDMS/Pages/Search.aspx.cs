@@ -11,16 +11,25 @@ namespace BrunswickDMS
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
-        }
-
-        /// <summary>
-        /// Normally I would use full-text search against SQL Server here.
-        /// However, neither LocalDB nor Windows Azure's SQL instances support this feature so I'll roll my own.
-        /// </summary>
-        protected void PerformSearch()
-        {
-            
+            // Handle postbacks here
+            if (!IsPostBack)
+            {
+                SearchTerm.Value = string.Empty;
+                SearchResultsDiv.Visible = false;
+            }
+            else
+            {
+                if (this.SearchTerm.Value.Length > 0)
+                {
+                    this.SearchResultsDiv.Visible = true;
+                    this.SearchListView.SearchTerm = this.SearchTerm.Value;
+                    this.SearchListView.DataBind();
+                }
+                else
+                {
+                    this.SearchResultsDiv.Visible = false;
+                }
+            }
         }
     }
 }

@@ -187,6 +187,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Services\TagAutoComplete.asmx" />
     <Content Include="User Controls\DocumentListView.ascx" />
     <Content Include="Pages\Browse.aspx" />
     <Content Include="Images\accent.png" />
@@ -304,6 +305,10 @@
     </Compile>
     <Compile Include="RetrieveDocument.ashx.cs">
       <DependentUpon>RetrieveDocument.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Services\TagAutoComplete.asmx.cs">
+      <DependentUpon>TagAutoComplete.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="User Controls\DocumentListView.ascx.cs">
       <DependentUpon>DocumentListView.ascx</DependentUpon>
